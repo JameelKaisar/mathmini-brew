@@ -23,15 +23,18 @@ jobs:
     
     publish:
       name: Update Homebrew formula
+      runs-on: ubuntu-22.04
       needs:
       - release
-      uses: dawidd6/action-homebrew-bump-formula@v3
-      with:
-        # Required, custom GitHub access token with the 'public_repo' and 'workflow' scopes
-        token: ${{secrets.TOKEN}}
-        # Optional, use the origin repository instead of forking
-        no_fork: true
-        # Optional, defaults to homebrew/core
-        tap: JameelKaisar/homebrew-tap
-        # Formula name, required
-        formula: mathmini
+
+      steps:
+      - uses: dawidd6/action-homebrew-bump-formula@v3
+        with:
+          # Required, custom GitHub access token with the 'public_repo' and 'workflow' scopes
+          token: ${{secrets.TOKEN}}
+          # Optional, use the origin repository instead of forking
+          no_fork: true
+          # Optional, defaults to homebrew/core
+          tap: JameelKaisar/homebrew-tap
+          # Formula name, required
+          formula: mathmini
