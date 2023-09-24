@@ -1,0 +1,37 @@
+name: Publish Package to Homebrew
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+    release:
+      name: Create a GitHub Release
+      runs-on: ubuntu-22.04
+
+      permissions:
+        contents: write  # IMPORTANT: mandatory for making GitHub Releases
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Upload to GitHub Release
+          env:
+            GITHUB_TOKEN: ${{ github.token }}
+          run: gh release create '${{ github.ref_name }}' --repo '${{ github.repository }}'
+    
+    publish:
+      name: Update Homebrew formula
+      needs:
+      - release
+      uses: dawidd6/action-homebrew-bump-formula@v3
+      with:
+        # Required, custom GitHub access token with the 'public_repo' and 'workflow' scopes
+        token: ${{secrets.TOKEN}}
+        # Optional, use the origin repository instead of forking
+        no_fork: true
+        # Optional, defaults to homebrew/core
+        tap: JameelKaisar/homebrew-tap
+        # Formula name, required
+        formula: mathmini
