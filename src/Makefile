@@ -23,8 +23,8 @@ ifeq ($(shell uname -s),Linux)
 	gcc -shared -o libmathmini.so mathmini.o
 endif
 
-binary: main.c
+binary: main.c library
 	gcc -o mathmini main.c -L. -lmathmini
 
 clean:
-	rm -rf mathmini *.o *.a *.so
+	rm -rf mathmini *.o *.a *.dylib *.so
